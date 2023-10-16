@@ -1,10 +1,8 @@
 import pygame as pg
 import random
 
-# Initialize Pygame
 pg.init()
 
-# Set up the display
 screen = pg.display.set_mode((1000, 1000))
 pg.display.set_caption("Mazerunner")
 
@@ -20,6 +18,7 @@ def grid():
 
 grid()
     
+random.normalvariate()
 
 def firkanter_gul():
     for _ in range(200):
@@ -31,8 +30,21 @@ def firkanter_gul():
  
 firkanter_gul()
 
-def firkanter_hvid():
+def firkanter_blå():
+    for _ in range(200):
+        size = 25,25
+        starting_pos = (random.randrange(0,1000,25) ,random.randrange(0,1000,25))
+        rect = starting_pos,size
+        pg.draw.rect(screen,(0,0,255),rect)
+        pg.display.flip()
+
+firkanter_blå()
+
+def gridvalues():
     pass
+
+
+
 
 
 running = True

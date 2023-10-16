@@ -2,42 +2,49 @@ import pygame as pg
 import random
 
 pg.init()
+
 screen = pg.display.set_mode((1000, 1000))
+pg.display.set_caption("Mazerunner")
+
+def grid():
+    start_position = (0, 0)
+    end_position = (1000, 1000)
+
+    for y in range(0, 1000, 25):
+        pg.draw.line(screen, (255, 255, 255), (start_position[0], y), (end_position[0], y))
+
+    for x in range(0, 1000, 25):
+        pg.draw.line(screen, (255, 255, 255), (x, start_position[1]), (x, end_position[1]))
+
+grid()
+    
+random.normalvariate()
+
+def firkanter_gul():
+    for _ in range(200):
+        size = 25,25
+        starting_pos = (random.randrange(0,1000,25) ,random.randrange(0,1000,25))
+        rect = starting_pos,size
+        pg.draw.rect(screen,(255,255,0),rect)
+        pg.display.flip()
+ 
+firkanter_gul()
+
+def firkanter_blå():
+    for _ in range(200):
+        size = 25,25
+        starting_pos = (random.randrange(0,1000,25) ,random.randrange(0,1000,25))
+        rect = starting_pos,size
+        pg.draw.rect(screen,(0,0,255),rect)
+        pg.display.flip()
+
+firkanter_blå()
+
+def gridvalues():
+    pass
 
 
-size = (25, 25)
-color = (255, 255, 255)
 
-
-
-position_list = []
-
-
-for _ in range(200):
-    x = random.gauss(500, 500)
-    y = random.gauss(500, 500)
-    position_list.append((x, y))
-
-
-new_position_list=[]
-
-for i, position_new in enumerate(position_list):
-    if position_list[i][0] + i - position_new[0] >= 10 or position_list[i][1] + i - position_new[1] > 10:
-        new_position_list.append(position_new)
-
-position_list = new_position_list 
-
-
-
-for i in range(len(position_list)):
-    pg.draw.rect(screen, color, (position_list[i][0] + i, position_list[i][1] + i, size[0], size[1]))
-
-
-
-print(position_new)
-print(f"\n{position_list}")
-
-pg.display.flip()
 
 
 running = True
@@ -46,5 +53,8 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
+
+   
+    
 
 pg.quit()
