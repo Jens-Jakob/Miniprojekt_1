@@ -7,8 +7,6 @@ pg.init()
 screen = pg.display.set_mode((1000, 1000))
 pg.display.set_caption("Mazerunner")
 size = 25, 25
-list_x = []
-list_y = []
 
 def grid():
     start_position = (0, 0)
@@ -21,10 +19,6 @@ def grid():
         pg.draw.line(screen, (255, 255, 255), (x, start_position[1]), (x, end_position[1]))
 
 
-
-
-
-
 grid()
 #https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
 grid_values = []
@@ -33,7 +27,8 @@ for _ in range(40):
     for _ in range(40):
         row.append(0)
     grid_values.append(row)
-
+list_x = []
+list_y = []
 
 def firkanter_gul():
     for _ in range(200):
@@ -45,10 +40,6 @@ def firkanter_gul():
         rect = starting_pos, size
         pg.draw.rect(screen, (255, 255, 0), rect)
         grid_values[starting_pos_x][starting_pos_y] = 1
-        
-
-
-
 
 
 def firkanter_blå():
@@ -66,7 +57,7 @@ def firkanter_blå():
 
 def firkant_rød():
     for _ in range(2):
-        for _ in range(1):
+        for _ in range(10):
             size = 25, 25
             starting_pos_x = random.randrange(0, 40)
             starting_pos_y = random.randrange(0, 40)
@@ -84,19 +75,34 @@ firkanter_gul()
 firkant_rød()
 pg.display.flip()
 
+
 def gridvalues():
     for row in grid_values:
         print(row)
-gridvalues()
-print(len(list_x))
+#gridvalues()
+
+gridlist = []
+for y in range(40):
+    for x in range(40):
+        gridlist.append((x, y))
+
+grid_dict = {}
+rect = (100,100),size
+queue = []
+
 running = True
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
+    for i, (x, y) in enumerate(gridlist):
+        key = f"({x},{y})"
+        value = grid_values[x][y]
+        grid_dict[key] = value
 
-    
+        if  grid_values[x] ==34 and grid_dict[key] == 0:
+            pg.draw.rect(screen,(0,255,0),rect)
 
-  
-
+    pg.display.flip()
 pg.quit()
+

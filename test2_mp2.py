@@ -19,10 +19,6 @@ def grid():
         pg.draw.line(screen, (255, 255, 255), (x, start_position[1]), (x, end_position[1]))
 
 
-
-
-
-
 grid()
 #https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
 grid_values = []
@@ -44,10 +40,6 @@ def firkanter_gul():
         rect = starting_pos, size
         pg.draw.rect(screen, (255, 255, 0), rect)
         grid_values[starting_pos_x][starting_pos_y] = 1
-        
-
-
-
 
 
 def firkanter_blå():
@@ -65,7 +57,7 @@ def firkanter_blå():
 
 def firkant_rød():
     for _ in range(2):
-        for _ in range(1):
+        for _ in range(10):
             size = 25, 25
             starting_pos_x = random.randrange(0, 40)
             starting_pos_y = random.randrange(0, 40)
@@ -92,9 +84,9 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-
-    
-
-  
-
 pg.quit()
+
+
+
+
+
