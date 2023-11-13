@@ -1,108 +1,74 @@
 import pygame as pg
 import random
-import sys
-
-pg.init()
-
-screen = pg.display.set_mode((1000, 1000))
-pg.display.set_caption("Mazerunner")
-size = 25, 25
-
-def grid():
-    start_position = (0, 0)
-    end_position = (1000, 1000)
-
-    for y in range(0, 1000, 25):
-        pg.draw.line(screen, (255, 255, 255), (start_position[0], y), (end_position[0], y))
-
-    for x in range(0, 1000, 25):
-        pg.draw.line(screen, (255, 255, 255), (x, start_position[1]), (x, end_position[1]))
+from collections import deque
+from queue import Queue,PriorityQueue
+import heapq
 
 
-grid()
-#https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
-grid_values = []
-for _ in range(40):
-    row = []
-    for _ in range(40):
-        row.append(0)
-    grid_values.append(row)
-list_x = []
-list_y = []
+def neighbors(maze, node):
+    row, col = None, None
+    for i, row_values in enumerate(maze):
+        if node in row_values:
+            row, col = i, row_values.index(node)
+            break
 
-def firkanter_gul():
-    for _ in range(200):
-        starting_pos_x = random.randrange(0, 40)
-        starting_pos_y = random.randrange(0, 40)
-        list_x.append(starting_pos_x)
-        list_y.append(starting_pos_y)
-        starting_pos = (starting_pos_x * 25, starting_pos_y * 25)
-        rect = starting_pos, size
-        pg.draw.rect(screen, (255, 255, 0), rect)
-        grid_values[starting_pos_x][starting_pos_y] = 1
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    result = []
+
+    for dr, dc in directions:
+        new_row, new_col = row + dr, col + dc
+        if 0 <= new_row < len(maze) and 0 <= new_col < len(maze[0]):
+            result.append(maze[new_row][new_col])
+
+    return result
+
+def cost(current, next_node):
+    return 1
 
 
-def firkanter_blå():
-    for _ in range(200):
-        starting_pos_x = random.randrange(0, 40)
-        starting_pos_y = random.randrange(0, 40)
-        list_x.append(starting_pos_x)
-        list_y.append(starting_pos_y)
-        starting_pos = (starting_pos_x * 25, starting_pos_y * 25)
-        rect = starting_pos, size
-        pg.draw.rect(screen, (0, 0, 255), rect)
-        grid_values[starting_pos_x][starting_pos_y] = 2
-        
+maze = [
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
+    [11, 12, 13, 14, 15],
+    [16, 17, 18, 19, 20],
+    [21, 22, 23, 24, 25]
+]
 
-
-def firkant_rød():
-    for _ in range(2):
-        for _ in range(10):
-            size = 25, 25
-            starting_pos_x = random.randrange(0, 40)
-            starting_pos_y = random.randrange(0, 40)
-            if grid_values[starting_pos_x][starting_pos_y] == 0:
-                starting_pos = (starting_pos_x * 25, starting_pos_y * 25)
-                rect = starting_pos, size
-                pg.draw.rect(screen, (255, 0, 0), rect)
-                list_x.append(starting_pos_x)
-                list_y.append(starting_pos_y)
-                grid_values[starting_pos_x][starting_pos_y] = -1
-                break
-
-firkanter_blå()
-firkanter_gul()
-firkant_rød()
-pg.display.flip()
-
-
-def gridvalues():
-    for row in grid_values:
-        print(row)
-#gridvalues()
-
-gridlist = []
-for y in range(40):
-    for x in range(40):
-        gridlist.append((x, y))
-
-grid_dict = {}
-rect = (100,100),size
 queue = []
+start = (maze[0][0])
+end = (maze[4][4])
+print(start,end)
 
-running = True
-while running:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running = False
-    for i, (x, y) in enumerate(gridlist):
-        key = f"({x},{y})"
-        value = grid_values[x][y]
-        grid_dict[key] = value
 
-        if  grid_values[x] ==34 and grid_dict[key] == 0:
-            pg.draw.rect(screen,(0,255,0),rect)
 
-    pg.display.flip()
-pg.quit()
+frontier = PriorityQueue()
+frontier.put(start, 0)
+came_from = dict()
+cost_so_far = dict()
+came_from[start] = None
+cost_so_far[start] = 0
+
+while not frontier.empty():
+    current = frontier.get()
+
+    if current == end:
+        break
+
+    for next_node in neighbors(maze, current):
+        new_cost = cost_so_far[current] + 1  # Assuming each step has a cost of 1
+        if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+            cost_so_far[next_node] = new_cost
+            priority = new_cost
+            frontier.put(next_node, priority)
+            came_from[next_node] = current
+
+
+
+
+
+
+
+
+
+
 
