@@ -139,7 +139,7 @@ if len(path) > 1:
   
 """ final_pixel = (end_pos[0] * 25 + 12, end_pos[1] * 25 + 12)
 pg.draw.line(screen, (100, 255, 100), end_pixel, final_pixel, width=3) """
-jj
+
 
 pg.display.flip()
 print(len(list_x))
