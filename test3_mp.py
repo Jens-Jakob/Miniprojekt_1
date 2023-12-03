@@ -1,13 +1,11 @@
 import pygame as pg
 import random
-import sys
 from collections import deque
 
 pg.init()
 screen = pg.display.set_mode((1000, 1000))
 pg.display.set_caption("Mazerunner")
 size = 25, 25
-random.seed(42)
 
 def grid():
     start_position = (0, 0)
@@ -52,8 +50,8 @@ def firkanter_blue(num_squares):
             colored_squares.add((x, y))
             rect = (x * 25, y * 25), size
             pg.draw.rect(screen, (0, 0, 255), rect)
-            grid_values[x][y] = 2
-        
+            grid_values[x][y] = 1
+
 
 def firkant_red():
     size = 25, 25
@@ -69,7 +67,6 @@ num_blue_squares = 200
 
 firkanter_blue(num_blue_squares)
 firkanter_yellow(num_yellow_squares)
-
 firkant_red()
 
 def bfs(grid, start, end):
@@ -78,22 +75,23 @@ def bfs(grid, start, end):
     parent = [[None for _ in range(cols)] for _ in range(rows)]
     
     queue = deque([start])
-    visited[start[0]][start[1]] = True
+    visited[start[0]][start[0]] = True
 
     while queue:
         x, y = queue.popleft()
-        for dx, dy in [(1,0), (0,1), (-1,0), (0,-1)]:  # Directions: Right, Down, Left, Up
+        directions = [(1,0), (0,1), (-1,0), (0,-1)]
+        for dx, dy in directions:
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and not visited[nx][ny] and grid[nx][ny] == 0:
                 visited[nx][ny] = True
                 parent[nx][ny] = (x, y)
                 queue.append((nx, ny))
                 if (nx, ny) == end:
-                    return parent  # Path found
+                    return parent 
 
-    return parent  # No path found
+    return parent 
 
-# Backtrack from end to start to get the path
+
 def get_path(parent, start, end):
     if parent[end[0]][end[1]] is None:
         print("No path found")
@@ -107,18 +105,14 @@ def get_path(parent, start, end):
     print("path:",path)
     return path
 
-# Modify the start and end positions to fit within the grid
-start_pos = (0, 0)  # Corresponds to grid cell (0,0)
-end_pos = (35, 31)  # Adjusted to fit within the 40x40 grid
+start_pos = (0, 0)  
+end_pos = (35, 31) 
 
-# Run BFS
 parent = bfs(grid_values, start_pos, end_pos)
 path = get_path(parent, start_pos, end_pos)
 
-# Draw the path lines
 if path:
     for i in range(1, len(path)):
-        # Convert grid coordinates to pixel coordinates
         x1, y1 = path[i - 1]
         x2, y2 = path[i]
         start_pixel = (x1 * 25 + 12, y1 * 25 + 12)
@@ -130,7 +124,6 @@ if path:
 
 pg.display.flip()
 
-print(len(list_x))
 """ def gridvalues():
     for row in grid_values:
         print(row)
